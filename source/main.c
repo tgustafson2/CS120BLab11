@@ -88,37 +88,23 @@ int N_Tick(int state){
 void transmit_data(unsigned short data){
 	int i,j;
 	unsigned short temp=data;
-	//for(j=0;j<8;j++){
-	for(i=0;i<8;i++){
-		PORTC=0x48;
-		PORTC|=((data>>i)&0x01);
-		PORTC|=0x02;
-		PORTC=0x48;
-		PORTC|=0x02;
-		PORTC|=0x10;
-		//PORTC=0x40;
-	}
-	PORTC=0x40;
-	PORTC|=0x10;
 	//PORTC=0x10;
-	data=0x00;
-	data=(temp>>8)<<1|(temp>>7);
-	for (i=0;i<8;i++){
+	//data=(temp>>8)<<1|((temp>>7)&0x01);
+	for (i=0;i<16;i++){
 		//Sets SRCLR to 1 allowing data to be set
 		//Also clears SRCLK in preparation of sending data
-		PORTC=0x08;
+		PORTC=0x18;
 		//set SER=next bit of data to be sent.
 		PORTC|=((data>>i)&0x01);
 		//set SRCLK=1. Rising edge shifts next bit of data into the shift register
 		PORTC|=0x02;
+		//PORTC=0x48;
+		//PORTC|=0x02;
+		//PORTC|=0x10;
 	}
 	//set RCLK=1. Rising edge copies data from Shift register to "Storage" register
-	PORTC=0x08;
-	PORTC|=0x02;
-	PORTC=0x00;
-	//}
-	//PORTC=0x40;
-	//PORTC|=0x20;
+	PORTC=0x04;
+	//PORTC|=0x12;
 	PORTC=0x00;
 }
 
