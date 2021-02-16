@@ -90,14 +90,15 @@ void transmit_data(unsigned short data){
 	unsigned short temp=data;
 	//PORTC=0x10;
 	//data=(temp>>8)<<1|((temp>>7)&0x01);
-	for (i=0;i<16;i++){
+	for (i=0;i<17;i++){
 		//Sets SRCLR to 1 allowing data to be set
 		//Also clears SRCLK in preparation of sending data
-		PORTC=0x18;
+		PORTC=0x48;
 		//set SER=next bit of data to be sent.
 		PORTC|=((data>>i)&0x01);
 		//set SRCLK=1. Rising edge shifts next bit of data into the shift register
 		PORTC|=0x02;
+		PORTC|=0x10;
 		//PORTC=0x48;
 		//PORTC|=0x02;
 		//PORTC|=0x10;
