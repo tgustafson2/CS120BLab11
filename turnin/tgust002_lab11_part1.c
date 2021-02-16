@@ -1,7 +1,7 @@
 /*	Author: lab
  *  Partner(s) Name: 
  *	Lab Section:
- *	Assignment: Lab #11  Exercise #4
+ *	Assignment: Lab #11  Exercise #1
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -20,15 +20,15 @@ enum O_States{OSM_Start,OSM_Output}O_State;
 
 
 int N_Tick(int state){
-	static unsigned short num;
+	static unsigned char num;
 	switch (state){
 		case NSM_Start:
-			num=0x4F00;
+			num=0x00;
 			state=NSM_Wait;
 			break;
 		case NSM_Wait:
 			if(((~PINA)&0x03)==0x01){
-				if(num<0x7FFF){
+				if(num<0xFF){
 					num++;
 				}
 				state=NSM_Increment;
@@ -64,7 +64,7 @@ int N_Tick(int state){
                                 state=NSM_Wait;
                         }
                         else if(((~PINA)&0x03)==0x01){
-                                if(num<0x7FFF){
+                                if(num<0xFF){
                                         num++;
                                 }
                                 state=NSM_Increment;
@@ -85,41 +85,15 @@ int N_Tick(int state){
 	return state;
 }
 
-void transmit_data(unsigned short data){
-	int i,j;
-	unsigned short temp=data;
-	//for(j=0;j<8;j++){
-	for(i=0;i<8;i++){
-		PORTC=0x48;
-		PORTC|=((data>>i)&0x01);
-		PORTC|=0x02;
-		PORTC=0x48;
-		PORTC|=0x02;
-		PORTC|=0x10;
-		//PORTC=0x40;
-	}
-	PORTC=0x40;
-	PORTC|=0x10;
-	//PORTC=0x10;
-	data=0x00;
-	data=(temp>>8)<<1|(temp>>7);
-	/*for (i=0;i<8;i++){
-		//Sets SRCLR to 1 allowing data to be set
-		//Also clears SRCLK in preparation of sending data
+void transmit_data(unsigned char data){
+	int i;
+	for (i=0;i<8;i++){
 		PORTC=0x08;
-		//set SER=next bit of data to be sent.
 		PORTC|=((data>>i)&0x01);
-		//set SRCLK=1. Rising edge shifts next bit of data into the shift register
 		PORTC|=0x02;
 	}
-	//set RCLK=1. Rising edge copies data from Shift register to "Storage" register
-	PORTC=0x08;
-	PORTC|=0x02;
-	PORTC=0x00;*/
-	//}
-	//PORTC=0x40;
-	//PORTC|=0x20;
-	PORTC=0x00;
+	PORTC|=0x04;
+	PORTC|=0x00;
 }
 
 int main(void) {
