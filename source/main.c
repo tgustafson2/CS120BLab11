@@ -103,7 +103,7 @@ void transmit_data(unsigned short data){
 	//PORTC=0x10;
 	data=0x00;
 	data=(temp>>8)<<1|(temp>>7);
-	/*for (i=0;i<8;i++){
+	for (i=0;i<8;i++){
 		//Sets SRCLR to 1 allowing data to be set
 		//Also clears SRCLK in preparation of sending data
 		PORTC=0x08;
@@ -115,7 +115,7 @@ void transmit_data(unsigned short data){
 	//set RCLK=1. Rising edge copies data from Shift register to "Storage" register
 	PORTC=0x08;
 	PORTC|=0x02;
-	PORTC=0x00;*/
+	PORTC=0x00;
 	//}
 	//PORTC=0x40;
 	//PORTC|=0x20;
